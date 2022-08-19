@@ -1,0 +1,208 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box !important;
+}
+a {
+  text-decoration: none;
+}
+#footer {
+  background: #15161d;
+  color: #b9babc;
+}
+
+#bottom-footer {
+  background: #1e1f29;
+}
+
+.footer {
+  margin: 30px 0px;
+}
+
+.footer .footer-title {
+  color: #fff;
+  text-transform: uppercase;
+  font-size: 18px;
+  margin: 0px 0px 30px;
+}
+
+.footer-links li + li {
+  margin-top: 15px;
+}
+
+.footer-links li a {
+  color: #b9babc;
+}
+
+.footer-links li i {
+  margin-right: 15px;
+  color: #d10024;
+  width: 14px;
+  text-align: center;
+}
+
+.footer-links li a:hover {
+  color: #d10024;
+}
+.footer-links li a svg {
+  padding-right: 10px;
+}
+.copyright {
+  margin-top: 30px;
+  display: block;
+  font-size: 12px;
+}
+
+.footer-payments li {
+  display: inline-block;
+  margin-right: 5px;
+}
+
+.footer-payments li a {
+  color: #15161d;
+  font-size: 36px;
+  display: block;
+}
+
+/*=========================================================
+      12 -> SLICK STYLE
+  ===========================================================*/
+
+/*----------------------------*\
+      Arrows
+  \*----------------------------*/
+
+.slick-prev,
+.slick-next {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e4e7ed;
+  background-color: #fff;
+  border-radius: 50%;
+  z-index: 22;
+  -webkit-transition: 0.2s all;
+  transition: 0.2s all;
+}
+
+.slick-prev:hover,
+.slick-prev:focus,
+.slick-next:hover,
+.slick-next:focus {
+  background-color: #d10024;
+  border-color: #d10024;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  font-family: FontAwesome;
+  color: #2b2d42;
+}
+
+.slick-prev:before {
+  content: "\f104";
+}
+
+.slick-next:before {
+  content: "\f105";
+}
+
+.slick-prev:hover:before,
+.slick-prev:focus:before,
+.slick-next:hover:before,
+.slick-next:focus:before {
+  color: #fff;
+}
+
+.slick-prev {
+  left: -20px;
+}
+
+.slick-next {
+  right: -20px;
+}
+
+/*----------------------------*\
+      Dots
+  \*----------------------------*/
+
+.slick-dots li,
+.slick-dots li button,
+.slick-dots li button:before {
+  width: 10px;
+  height: 10px;
+}
+
+.slick-dots li button:before {
+  content: "";
+  opacity: 1;
+  background: #e4e7ed;
+  border-radius: 50%;
+}
+
+.slick-dots li.slick-active button:before {
+  background-color: #d10024;
+}
+
+.custom-dots .slick-dots {
+  position: static;
+  margin: 15px 0px;
+}
+
+/*=========================================================
+      13 -> RESPONSIVE
+  ===========================================================*/
+
+@media only screen and (max-width: 1201px) {
+}
+
+@media only screen and (max-width: 991px) {
+  #top-header .header-links.pull-left {
+    float: none !important;
+  }
+  #top-header .header-links.pull-right {
+    float: none !important;
+    margin-top: 5px;
+  }
+  .header-logo {
+    float: none;
+    text-align: center;
+  }
+  .header-logo .logo {
+    display: inline-block;
+  }
+  #product-imgs {
+    margin-bottom: 60px;
+    margin-top: 15px;
+  }
+  #rating {
+    text-align: center;
+  }
+  #reviews {
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .section-title .section-nav {
+    float: none;
+    margin-top: 10px;
+  }
+  .section-tab-nav li {
+    margin-top: 10px;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  [class*="col-xs"] {
+    width: 100%;
+  }
+  .store-grid {
+    float: none;
+    margin-top: 10px;
+  }
+  .store-pagination {
+    float: none;
+    margin-top: 10px;
+  }
+}
