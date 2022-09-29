@@ -36,6 +36,10 @@ require('./assets/css/login.css');
 require('./assets/css/regis.css');
 require('./assets/css/footer.css');
 require('./assets/css/product.css');
+require('./assets/css/checkout.css');
+require('./assets/css/loading.css');
+require('./assets/css/addProduct.css');
+
 
 
 import 'slick-carousel/slick/slick.css';
@@ -48,6 +52,10 @@ import LoginPage from "@/components/LoginAccount"
 import RegisterPage from '@/components/RegisterAccount'
 import AllProducts from '@/components/AllProducts'
 import callApi from '@/components/CallApi'
+import Checkout from '@/components/CheckoutProduct'
+import AddProduct from '@/components/AddProduct'
+import ProductManage from '@/components/ProductManage'
+import EditProduct from '@/components/EditProduct'
 // Vue.component('myHeader', HeaderProduct)
 // Vue.component('myFooter', FooterProduct)
 Vue.use(Router);
@@ -59,7 +67,12 @@ export const router = new Router({
     { path: '/register', component: RegisterPage, name: 'Register' },
     // { path: '/footer', component: FooterProduct },
     { path: '/product', component: AllProducts, name: 'HomePage' },
-    {path: '/callApi', component: callApi},
+    { path: '/callApi', component: callApi },
+    { path: '/checkout', component: Checkout },
+    { path: '/addProduct', component: AddProduct, name:'AddProduct'},
+    { path: '/productManage', component: ProductManage, name:'ProductManage'},
+    { path: '/editProduct', component: EditProduct, name:'EditProduct'},
+
     // nếu không sẽ chuyển đến trang home
     { path: '*', redirect: '/' }
   ]

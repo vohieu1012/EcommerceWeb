@@ -71,6 +71,13 @@
           />
         </div>
       </div>
+      <div class="loader" v-if="loading">
+        <div class="loader-centered">
+          <div class="object square-one"></div>
+          <div class="object square-two"></div>
+          <div class="object square-three"></div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -85,6 +92,7 @@ export default {
         password: "",
         cf_password: "",
       },
+      loading: false,
       errors: {},
       arr: [],
     };
@@ -92,11 +100,14 @@ export default {
   created() {},
   methods: {
     register() {
+      
+      
       axios
         .post("http://127.0.0.1:8000/api/register", this.users)
         .then((response) => {
           console.log(response.data);
           this.$router.push({ name: "Login" });
+          this.loading = false;
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
@@ -124,6 +135,7 @@ export default {
             this.arr[3] = error.response.data.errors.cf_password[0];
             console.log(this.arr[3]);
           }
+          this.loading = false;
         });
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="headerPage">
     <div id="top-header">
       <header>
         <div class="container">
@@ -23,23 +23,35 @@
               >
             </li>
           </ul>
-          <ul class="header-links pull-right">
+          <ul class="header-links pull-right" style="margin-right: -30px">
             <li>
               <a href="#"
                 ><font-awesome-icon icon="fa-solid fa-dollar-sign" /> USD</a
               >
+              <a href="" style="padding-left: 14px"
+                ><font-awesome-icon icon="fa-solid fa-user"
+              /></a>
             </li>
             <li>
-              <a href="#"
+              <!-- <a href="#"
                 ><font-awesome-icon icon="fa-solid fa-user" /> My Account</a
-              >
+              > -->
             </li>
+            <nav class="dropdown_logout">
+              <menu>
+                <menuitem id="demo1">
+                  <a>{{ this.user_name }}</a>
+                  <menu>
+                    <menuitem
+                      ><button class="logout" @click="getLogout">
+                        LogOut
+                      </button></menuitem
+                    >
+                  </menu>
+                </menuitem>
+              </menu>
+            </nav>
           </ul>
-          <div>
-            <b-dropdown class="dropdown_logout">
-              <button @click="getLogout">LogOut</button>
-            </b-dropdown>
-          </div>
         </div>
       </header>
     </div>
@@ -54,9 +66,10 @@
           <!-- LOGO -->
           <div class="col-md-3">
             <div class="header-logo">
-              <a href="#" class="logo">
+              <!-- <a href="#" class="logo">
                 <img :src="img" alt="" />
-              </a>
+              </a> -->
+              <p>XHIEU STORE</p>
             </div>
           </div>
           <!-- /LOGO -->
@@ -64,15 +77,17 @@
           <!-- SEARCH BAR -->
           <div class="col-md-6">
             <div class="header-search">
-              <form>
-                <select class="input-select">
-                  <option value="0">All Categories</option>
-                  <option value="1">Category 01</option>
-                  <option value="1">Category 02</option>
-                </select>
-                <input class="input" placeholder="Search here" />
-                <button class="search-btn">Search</button>
-              </form>
+              <select class="input-select">
+                <option value="0">All Categories</option>
+                <option value="1">Category 01</option>
+                <option value="1">Category 02</option>
+              </select>
+              <input
+                v-model="valueProduct"
+                class="input"
+                placeholder="Search here"
+              />
+              <button class="search-btn" @click="searchProduct">Search</button>
             </div>
           </div>
           <!-- /SEARCH BAR -->
@@ -168,7 +183,81 @@
       </div>
       <!-- container -->
     </div>
+    <div :class="{ active: isActive }" style="display:block margin:auto">
+      <div class="row">
+        <div class="products-tabs">
+          <!-- tab -->
+          <div id="tab1" class="tab-pane active">
+            <div class="products-slick row" data-nav="#slick-nav-1">
+              <!-- product -->
+              <div
+                class="product col-3"
+                v-for="dataProduct in dataProducts"
+                :key="dataProduct.id"
+              >
+                <div class="product-img">
+                  <img
+                    v-bind:src="
+                      'http://127.0.0.1:8000/uploads/' + dataProduct.image
+                    "
+                    alt=""
+                  />
+                  <div class="product-label">
+                    <span class="sale">-{{ dataProduct.discount }}%</span>
+                    <span class="new">NEW</span>
+                  </div>
+                </div>
+                <div class="product-body">
+                  <p class="product-category">Category</p>
+                  <h3 class="product-name">
+                    <a href="#">{{ dataProduct.product_name }}</a>
+                  </h3>
+                  <h4 class="product-price">
+                    ${{ dataProduct.price }}
+                    <del class="product-old-price"
+                      >${{
+                        dataProduct.price -
+                        (dataProduct.price * dataProduct.discount) / 100
+                      }}</del
+                    >
+                  </h4>
+                  <div class="product-rating"></div>
+                  <div class="product-btns">
+                    <button class="add-to-wishlist">
+                      <font-awesome-icon icon="fa-solid fa-heart" /><span
+                        class="tooltipp"
+                        >add to wishlist</span
+                      >
+                    </button>
+                    <button class="add-to-compare">
+                      <font-awesome-icon icon="fa-solid fa-plus" /><span
+                        class="tooltipp"
+                        >add to compare</span
+                      >
+                    </button>
+                    <button class="quick-view">
+                      <font-awesome-icon icon="fa-solid fa-eye" /><span
+                        class="tooltipp"
+                        >quick view</span
+                      >
+                    </button>
+                  </div>
+                </div>
+                <div class="add-to-cart">
+                  <button class="add-to-cart-btn" @click="addToCart">
+                    <i class="fa fa-shopping-cart"></i> add to cart
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="slick-nav-1" class="-nav"></div>
+          </div>
+          <!-- /tab -->
+        </div>
+      </div>
+    </div>
   </div>
+
   <!-- /MAIN HEADER -->
 </template>
 <script>
@@ -179,9 +268,44 @@ export default {
   data() {
     return {
       img: require("@/assets/img/logo.png"),
+      user_name: "",
+      dataProducts: [],
+      isActive: false,
     };
   },
   methods: {
+    searchProduct() {
+      axios
+        .get(`http://127.0.0.1:8000/api/searchProduct/${this.valueProduct}`)
+        .then((response) => {
+          this.dataProducts = response.data;
+          console.log(this.dataProducts);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    },
+    checkLogin() {
+      let token = window.localStorage.getItem("token");
+      if (token == null) {
+        this.$router.push({ name: "Login" });
+      }
+      axios
+        .get("http://127.0.0.1:8000/api/userInf", {
+          headers: {
+            Accept: "application/json",
+            Authorization: "Bearer" + " " + token,
+          },
+        })
+        .then((response) => {
+          this.user_name = response.data[0].user_name;
+          console.log(response.data[0].user_name);
+        })
+        .catch((e) => {
+          console.log("Bearer" + token);
+          console.log(e);
+        });
+    },
     getLogout() {
       let token = window.localStorage.getItem("token");
       axios
@@ -203,20 +327,21 @@ export default {
     },
   },
   mounted() {
-    (function ($) {
-      "use strict";
+    this.checkLogin(),
+      (function ($) {
+        "use strict";
 
-      // Mobile Nav toggle
-      $(".menu-toggle > a").on("click", function (e) {
-        e.preventDefault();
-        $("#responsive-nav").toggleClass("active");
-      });
+        // Mobile Nav toggle
+        $(".menu-toggle > a").on("click", function (e) {
+          e.preventDefault();
+          $("#responsive-nav").toggleClass("active");
+        });
 
-      // Fix cart dropdown from closing
-      $(".cart-dropdown").on("click", function (e) {
-        e.stopPropagation();
-      });
-    })(jQuery);
+        // Fix cart dropdown from closing
+        $(".cart-dropdown").on("click", function (e) {
+          e.stopPropagation();
+        });
+      })(jQuery);
     //
     var count = 1;
     setTimeout(demo, 500);
@@ -251,18 +376,33 @@ export default {
 };
 </script>
 <style scoped>
-.dropdown {
+.dropdown_logout {
   position: absolute;
-  margin-left: 758px;
-  margin-top: 5px;
-  height: 5px;
+  margin-top: -42px;
+}
+#demo1 a {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+#demo1 a:hover {
+  color: #d10024;
+}
+.logout {
+  color: black;
+  margin-left: 50px;
+  margin-top: 10px;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  background-color: rgb(122, 118, 118);
+  font-size: 12px;
 }
 /*  */
 html,
 body {
   padding: 0px;
   margin: 0px;
-  background: #191a1d;
+
   font-family: "Karla", sans-serif;
   width: 100vw;
 }
@@ -320,16 +460,15 @@ nav {
 }
 
 nav a {
-  background: #75f;
   color: #fff;
   min-width: 190px;
   transition: background 0.5s, color 0.5s, transform 0.5s;
-  margin: 0px 6px 6px 0px;
-  padding: 20px 40px;
+
+  padding: 18px 0px 0px 38px;
   box-sizing: border-box;
   border-radius: 3px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
   position: relative;
+  z-index: 1;
 }
 
 nav a:hover:before {
@@ -337,27 +476,9 @@ nav a:hover:before {
   top: 0;
   left: 0;
   position: absolute;
-  background: rgba(0, 0, 0, 0.2);
+
   width: 100%;
   height: 100%;
-}
-
-nav > menu > menuitem > a + menu:after {
-  content: "";
-  position: absolute;
-  border: 10px solid transparent;
-  border-top: 10px solid white;
-  left: 12px;
-  top: -40px;
-}
-nav menuitem > menu > menuitem > a + menu:after {
-  content: "";
-  position: absolute;
-  border: 10px solid transparent;
-  border-left: 10px solid white;
-  top: 20px;
-  left: -180px;
-  transition: opacity 0.6, transform 0s;
 }
 
 nav > menu > menuitem > menu > menuitem {
@@ -380,5 +501,16 @@ menuitem > menu > menuitem:hover > menu > menuitem,
 menuitem > menu > menuitem.hover > menu > menuitem {
   transform: translateX(0) translateY(0%);
   opacity: 1;
+}
+.header-logo p {
+  font-size: 24px;
+  color: white;
+  font-weight: 600;
+  padding-left: 25px;
+  border: 1px solid red;
+  padding-right: 25px;
+  background-color: red;
+  margin-left: 20px;
+  border-radius: 10px;
 }
 </style>
